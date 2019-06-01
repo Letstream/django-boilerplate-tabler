@@ -1,6 +1,13 @@
-# GSTHEALTH Official Repository
+# Django-Tabler Boilerplate Official Repository
 
 Welcome to Django-Tabler Boilerplate by Letstream®
+
+This project is mirrored at:
+- [Github](https://github.com/letstream/django-boilerplate-tabler)
+- [Gitlab](https://gitlab.com/letstream/django-boilerplate-tabler)
+
+[![ForTheBadge built-with-love](http://ForTheBadge.com/images/badges/built-with-love.svg)](https://github.com/letstream/)
+
 
 ## Features
 
@@ -38,3 +45,5 @@ Welcome to Django-Tabler Boilerplate by Letstream®
 - Head to http://localhost:8000/dashboard and login with superuser credentials.
 - Now goto http://localhost:8000/dashboard/profile and and in the Roles Section, select Admin and Click on Save.
 - All Set. The application is ready to start.
+
+This repository is maintained by Letstream Ventures Private Limited.
