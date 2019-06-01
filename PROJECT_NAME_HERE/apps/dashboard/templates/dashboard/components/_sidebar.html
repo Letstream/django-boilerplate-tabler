@@ -62,12 +62,6 @@
                           <a href="{% url 'dashboard:create-user' %}">Create User</a>
                         </li>
 
-                        <div class="dropdown-divider"></div>
-                        <li>
-                          <a href="{% url 'portal:contact-submissions' %}">
-                              <i class="fe fe-list"></i> Contact Us Submissions
-                          </a>
-                        </li>
                         {% if user.is_superuser %}
                         <div class="dropdown-divider"></div>
                         <li>

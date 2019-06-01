@@ -27,6 +27,7 @@ from .utils import TableData as td
 @login_required
 def IndexView(request):
 
+    t = timezone.now()
     if has_role(request.user, Admin) or request.user.is_superuser:
         context = {
             "count": {

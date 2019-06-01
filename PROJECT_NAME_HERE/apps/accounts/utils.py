@@ -187,8 +187,6 @@ def getTableDataForUsers(request_obj, page=1, enabled_columns=None, search=None,
                 t.addCellToRow(counter, cell_type, text, subtext, param)
 
         if admin_view:
-            t.addActionButtonToRow(counter, reverse('store:subscriptionmanager:user-service', args=[
-                                   'gstin', user.id]), "View GSTIN Quota", "btn-secondary")
             t.addActionButtonToRow(counter, reverse(
                 'dashboard:edit-user', args=[user.id]), "Edit", "btn-secondary")
 

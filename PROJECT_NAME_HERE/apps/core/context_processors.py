@@ -24,6 +24,6 @@ def site_meta_processor(request):
     }
     options = getOptions()
     for option in options:
-        data['meta'][option['key']] = option['value']
+        data['meta'][option] = options[option]
 
     return data

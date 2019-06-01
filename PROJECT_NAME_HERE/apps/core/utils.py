@@ -33,10 +33,13 @@ def addOption(key, value, label):
 
 def getOptions():
     try:
-        site_options = Options.objects.all().values('key', 'value')
-        return site_options
+        site_options = Options.objects.all()
     except Exception as e:
         return None
+    data = {}
+    for x in site_options:
+        data[x.key] = x.value
+    return data
 
 
 def getOption(key):
