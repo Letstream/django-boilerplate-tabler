@@ -1,0 +1,7 @@
+Hi {{ user.get_full_name }},
+You're receiving this email because you requested a password reset for your account. Please click the link below to reset your password:
+
+{{ domain }}{% url 'accounts:password_reset_confirm' uidb64=uid token=token %} 
+
+Regards,
+Team

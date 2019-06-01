@@ -1,0 +1,40 @@
+{% load static %}
+{% load core_filters %}
+<div class="container-fluid p-0 m-0">
+    <div class="row sticky-top">
+        <div class="col-12">
+            <div class="header card mt-0 mx-auto d-lg-flex p-0" id="main-header">
+                <div class="d-flex pl-1 pr-2 py-3 align-items-center">
+                    <div class="row w-100">
+                        <div class="col-12 col-md-6">
+                            <div class="d-flex align-items-center">
+                                <span class="avatar mr-3" style="background-image: url('{% static 'assets/images/avatar.png' %}')"></span>
+                                <div>
+                                    <h5 class="m-0">User Preference</h5>
+                                    <small class="text-muted">Extra Info here</small>
+                                </div>
+                                <div class="ml-3">
+                                    <a href="#" class="btn btn-sm btn-outline-secondary">Change</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6 fin-year">
+                            <div class="row">
+                                <small class="text-muted col-6 col-md-12">
+                                    <strong class="text-dark">User Preference: </strong>
+                                    Not Chosen 
+                                    <a href="#" class="text-default"><i class="fe fe-edit"></i></a>
+                                </small>
+                                <small class="text-muted col-6 col-md-12">
+                                    <strong class="text-dark">Mode: </strong>
+                                    Not Chosen 
+                                    <a href="#" class="text-default"><i class="fe fe-edit"></i></a>    
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  

@@ -1,0 +1,44 @@
+{% extends '_base.html' %}
+{% block title %}Confirm Action{% endblock %}
+
+{% block page %}
+    <div class="page-single">
+        <div class="container">
+            <div class="row">
+                <div class="col-8 mx-auto">
+                    <div class="text-center mb-6">
+                        <i class="fe fe-alert-triangle text-danger" style="font-size:50px;"></i>
+                    </div>    
+                    <form class="card" action="" method="post">
+                        {% csrf_token %}
+                        <div class="card-body p-6">
+                            <div class="card-title text-center">Are you sure?</div>
+                            <p class="font-weight-bold text-center">
+                                Are you sure you want to {{ action }} with {{ key }} = {{ value }}. This will delete all data related to given {{ key }}.
+                            </p>
+                            <div class="form-footer">
+                                <div class="row">
+                                    <div class="col-12 col-md-6 p-3">
+                                        <a href="javascript:history.back()" class="btn btn-primary btn-block">No</a>
+                                    </div>
+                                    <div class="col-12 col-md-6 p-3">
+                                        <button type="submit" name="yes" class="btn btn-danger btn-block">Yes</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    
+                        <div class="text-center text-muted text-danger">
+                            {% if warning %}
+                                <div class="alert alert-danger">{{ warning }}</div>
+                            {% else %}
+                                The Action cannot be undone.
+                            {% endif %}
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

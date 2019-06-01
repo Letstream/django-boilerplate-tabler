@@ -1,0 +1,32 @@
+{% extends 'accounts/_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Login{% endblock %}
+{% block page %}
+      <div class="page-single">
+        <div class="container">
+          <div class="row">
+            <div class="col col-login mx-auto">
+              <div class="text-center mb-6">
+                <a href="{% url 'dashboard:home' %}" ><img src="{% static 'assets/images/logo.png' %}" class="h-9" alt="logo"></a>
+              </div>
+              <div class="card">
+                <div class="card-body p-6">
+                  <div class="card-title text-center">Login to your account</div>
+                    {% if logged_out %}
+                      <div class="alert alert-success text-center">You have been logged out.</div>
+                    {% endif %}
+                    {% if activated %}
+                      <div class="alert alert-success text-center">Your account has been activated, you can now login.</div>
+                    {% endif %}
+                    {% crispy form %}
+                </div>
+              </div>
+              <div class="text-center text-muted">
+                <a href="{% url 'accounts:register' %}" class="mx-3">Sign up</a> | <a class="mx-3" href="{% url 'accounts:password_reset' %}">Forgot Password</a> | <a class="mx-3" href="{% url 'accounts:resend-account-activation' %}">Resend Activation</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+{% endblock %}

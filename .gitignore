@@ -1,0 +1,14 @@
+venv/
+venveb/
+__pycache__/
+.vscode/
+.env
+uploads/
+temp/
+staticfiles/
+*.log
+.idea/
+*.pyc
+bash.exe.stackdump
+jupyter-notebooks/
+*.ipynb

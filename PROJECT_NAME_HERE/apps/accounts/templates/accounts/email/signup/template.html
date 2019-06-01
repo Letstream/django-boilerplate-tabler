@@ -1,0 +1,14 @@
+Hi {{ user.get_full_name }},
+<p>
+    Welcome Aboard! You're a step away from accessing the application!
+</p>
+<p>
+    Please click the link below to activate your account:
+</p>
+<p>
+    {{ domain }}{% url 'accounts:activate-account' uidb64=uid token=token %} 
+</p>
+<p>
+    Regards,<br>
+    Team
+</p>

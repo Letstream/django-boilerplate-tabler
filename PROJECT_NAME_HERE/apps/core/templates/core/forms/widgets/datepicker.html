@@ -1,0 +1,13 @@
+
+    <input type="text" class="form-control" id="{{ widget.attrs.id }}" name="{{ widget.name }}" value="{{ widget.value }}"/>
+    <script type="text/javascript">
+        require(['jquery', 'bootstrap', 'moment', 'datetimepicker'], function($, bs){
+            $('#{{ widget.attrs.id }}').datetimepicker({
+                viewMode: 'years',
+                sideBySide: true,
+                showTodayButton: true,
+                showClear: true,
+                format: "YYYY-MM-{% if widget.attrs.set_fixed_date %}{{ widget.attrs.set_fixed_date|stringformat:'02d' }}{% else %}DD{% endif %}"
+            });
+        });
+    </script>

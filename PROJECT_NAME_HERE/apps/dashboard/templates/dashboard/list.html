@@ -1,0 +1,92 @@
+{% extends 'dashboard/_base_left_sidebar.html' %}
+
+{% block title %}{{ title|default:"Untitled Page" }}{% endblock %}
+
+{% block header_css %}
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+{% endblock %}
+
+{% block header_js %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+{% endblock %}
+
+{% block sidebar %}
+<div class="card">
+    <div class="card-body">
+        <form action="" method="GET">
+            <div class="input-icon my-3">
+                <input type="search" name="search" class="form-control header-search" placeholder="Search…" tabindex="1" {% if tableData.meta.search %}value="{{ tableData.meta.search }}"{% endif %}>
+                <div class="input-icon-addon">
+                    <i class="fe fe-search"></i>
+                </div>
+            </div>
+            {% if tableData.meta.filter %}
+            <div class="my-3">
+                <div class="input-group">
+                    <select class="form-control" name="filter">
+                        <option value="">Filter By </option>
+                        {% for option in tableData.meta.filter %}
+                        <option value="{{ option.value }}" {% if option.value == tableData.meta.filter_by %}selected{% endif %}>{{ option.label }}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="input-group-append">
+                        <span class="input-group-btn"><button class="btn btn-warning" type="submit"><i class="fe fe-filter"></i></button></span>
+                    </span>
+                </div>
+            </div>
+            {% endif %}
+            <div class="row">
+                <div class="card-title col-12 my-3">Columns</div> 
+                <div class="p-3">
+                    {% for field in tableData.available_fields %}
+                    <label class="custom-control custom-checkbox custom-control-inline col-5">
+                        <input type="checkbox" class="custom-control-input" name="enabled_columns" value="{{ field.name }}" {% if field.name in tableData.enabled_fields %}checked{% endif %}>
+                        <span class="custom-control-label">
+                            {{ field.label|capfirst }}
+                        </span>  
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="card-title col-12 my-3">Sort By</div> 
+                <div class="p-3">
+                    {% for field in tableData.sortable_fields %}
+                    <label class="custom-control custom-radio custom-control-inline col-5">
+                        <input type="radio" class="custom-control-input" name="sort_by" value="{{ field.name }}" {% if field.name == tableData.meta.sorted_by %}checked{% endif %}>
+                        <span class="custom-control-label">
+                            {{ field.label|capfirst }}
+                        </span>  
+                    </label>
+                    {% endfor %}
+                </div>
+                <div class="p-3">
+                    <label class="custom-control custom-radio custom-control-inline col-5">
+                        <input type="radio" class="custom-control-input" name="sort_order" value="asc" {% if tableData.meta.sort_order == "asc" %}checked{% endif %}>
+                        <span class="custom-control-label">Ascending</span>  
+                    </label>
+                    <label class="custom-control custom-radio custom-control-inline col-5">
+                        <input type="radio" class="custom-control-input" name="sort_order" value="desc" {% if tableData.meta.sort_order == "desc" %}checked{% endif %}>
+                        <span class="custom-control-label">Descending</span>  
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-footer">
+                <button class="btn btn-primary" type="submit">Apply</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block content_block %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            {% include 'dashboard/_list-table.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

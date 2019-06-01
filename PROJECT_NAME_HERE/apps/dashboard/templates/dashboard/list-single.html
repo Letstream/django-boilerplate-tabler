@@ -1,0 +1,51 @@
+{% extends 'dashboard/_base.html' %}
+
+{% block title %}{{ title|default:"Untitled Page" }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="my-3 my-md-5">
+            {% if title %}
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h3 class="card-title">{{ title }}</h3>
+                </div>
+            </div>
+            {% endif %}
+            <div class="row">
+                {% if not tableData.meta.disable_search %}
+                <div class="col-12">
+                    <form class="row">
+                        <div class="col-12 {% if tableData.meta.filter %}col-md-6{% endif %}">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Type to search.." name="search" value="{{ tableData.meta.search }}">
+                                <span class="input-group-append">
+                                    <span class="input-group-btn"><button class="btn btn-primary" type="submit"><i class="fe fe-search"></i></button></span>
+                                </span>
+                            </div>
+                        </div>
+                        {% if tableData.meta.filter %}
+                        <div class="col-12 col-md-6">
+                            <div class="input-group">
+                                <select class="form-control" name="filter">
+                                    <option value="">Filter By </option>
+                                    {% for option in tableData.meta.filter %}
+                                    <option value="{{ option.value }}" {% if option.value == tableData.meta.filter_by %}selected{% endif %}>{{ option.label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="input-group-append">
+                                    <span class="input-group-btn"><button class="btn btn-warning" type="submit"><i class="fe fe-filter"></i></button></span>
+                                </span>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </form>
+                </div>
+                {% endif %}
+                <div class="col-12 my-3 my-md-5">
+                    {% include 'dashboard/_list-table.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

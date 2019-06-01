@@ -1,0 +1,17 @@
+Howdy Admin,
+<p>
+    Hooray! A new user has been registered on your website! Check your admin panel for more info.
+</p>
+<p>
+    <strong>User Details:</strong>
+    <br>
+    <strong>User Id:</strong> {{ user.id }}
+    <br>
+    <strong>Full Name:</strong> <a href="{{ user.get_absolute_url }}">{{ user.get_full_name }}</a>
+    <br>
+    <strong>Email:</strong> {{ user.email }}
+</p>
+<p>
+    Regards,<br>
+    Admin
+</p>

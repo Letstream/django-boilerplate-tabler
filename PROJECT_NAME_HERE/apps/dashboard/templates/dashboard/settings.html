@@ -1,0 +1,12 @@
+{% extends 'dashboard/_base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h3 class="page-title"><i class="fe fe-settings"></i> Settings</h3>
+    </div>
+    {% crispy form %}
+</div>
+{% endblock %}

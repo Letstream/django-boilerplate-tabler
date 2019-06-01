@@ -1,0 +1,27 @@
+{% extends 'accounts/_base.html' %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block page %}
+  <div class="page-single">
+    <div class="container">
+      <div class="row">
+        <div class="col col-login mx-auto">
+          <div class="text-center mb-6">
+            <img src="{% static 'assets/images/logo.png' %}" class="h-9" alt="">
+          </div>
+          <div class="card">
+              <div class="card-body">
+                  We have sent you an email with a magic link. Click on the link to {{ action }}. This link is valid only once and should be used as soon as it arrives.
+                  <br>It may take upto 15 minutes to arrive.
+                  <br>Didn't receive the mail? Don't forget to check your <em>Spam Folder</em>. 
+              </div>
+          </div>
+          <div class="text-center text-muted">
+            Take me back to <a href="{% url 'accounts:login' %}">Login</a> screen.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

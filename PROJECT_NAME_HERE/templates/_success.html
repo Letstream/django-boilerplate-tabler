@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="col-12 col-md-8 mx-auto">
+        <div class="text-center mb-6">
+            <i class="fe fe-check-circle text-success" style="font-size:50px;"></i>
+        </div>
+        <div class="card">
+            <div class="card-body p-6">
+                <div class="card-title text-center font-weight-bold">All Done!</div>
+                <p class="text-center">{{ message }}</p>
+            </div>
+        </div>
+        <div class="text-center text-muted">
+            <a class="btn btn-primary" href="{{ link|default:"javascript:history.back()" }}">
+                <i class="fe fe-arrow-left mr-2"></i>{{ cta|default:"Go back" }}
+            </a>
+        </div>
+    </div>
+</div>

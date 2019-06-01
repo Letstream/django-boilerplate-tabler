@@ -1,0 +1,85 @@
+{% extends 'dashboard/_base.html' %}
+{% load crispy_forms_tags %}
+{% load permission_tags %}
+{% load static %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block header_js %}
+{{ form.media }}
+{% endblock %}
+
+{% block content %}
+    <div class="my-3 my-md-5">
+        <div class="card w-75 mx-auto">
+            <div class="card-header">
+                Edit User
+            </div>
+            <div class="card-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-5 mx-auto text-center">
+                            <span class="avatar avatar-xxl" style="background-image:url('{% if user_context.avatar %}{{ user_context.avatar.url }}{% else %}{% static 'assets/images/avatar.png' %}{% endif %}')"></span>
+                        </div>
+                    </div>
+                    {% if user|can:constants.permissions.EDIT_USERS %}
+                    <div class="row">
+                        <fieldset class="form-fieldset w-100 my-3">
+                            <div class="form-row align-items-center">
+                                <div class="col-12 col-sm-6 form-group align-items-center">
+                                    <label class="form-label">User Id</label>
+                                    <div class="form-control-plaintext">{{ user_context.id }} {% if user_context.is_active %}(Active){% else %}(Inactive){% endif %}</div>
+                                </div>
+                                <div class="col-12 col-sm-6 align-items-center">
+                                    <label class="form-label">Member Since</label>
+                                    <div class="form-control-plaintext">{{ user_context.date_joined }}</div>
+                                </div>
+                                <div class="col-12 col-sm-6 align-items-center">
+                                    <label class="form-label">Last Login</label>
+                                    <div class="form-control-plaintext">{{ user_context.last_login }}</div>
+                                </div>
+                                <div class="col-12 col-sm-6 align-items-center">
+                                    <label class="form-label">Email Confirmed</label>
+                                    <div class="form-control-plaintext">{{ user_context.email_confirmed }}</div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    {% endif %}
+                    <div class="row">
+                        <fieldset class="form-fieldset w-100 my-3">
+                            {% crispy form form.helper %}
+                        </fieldset>
+                    </div>
+                    <div class="row">
+                        <fieldset class="form-fieldset w-100">
+                            {% crispy passform %}
+                        </fieldset>
+                    </div>
+                    {% if rolesForm is not None %}
+                    <div class="row">
+                        <fieldset class="form-fieldset w-100">
+                            {% crispy rolesForm %}
+                        </fieldset>
+                    </div>
+                    {% endif %}
+                    {% if user|can:constants.permissions.SUSPEND_USERS %}
+                    <div class="row">
+                        <fieldset class="form-fieldset w-100">
+                                {% if user_context.is_active %}
+                                <a href="{% if user == user_context %}#{% else %}{% url 'dashboard:suspend-user' user_context.id %}?next={{ request.path }}{% endif %}"><button class="btn btn-danger" {% if user == user_context %}disabled{% endif %}>Suspend Login</button></a>
+                                {% else %}
+                                <a href="{% url 'dashboard:enable-user' user_context.id %}?next={{ request.path }}"><button class="btn btn-primary">Enable Login</button></a>
+                                {% endif %}
+                                <a href="{% if user == user_context %}#{% else %}{% url 'dashboard:remove-user' user_context.id %}{% endif %}"><button class="btn btn-danger" {% if user == user_context %}disabled{% endif %}>Remove User</button></a>
+                                {% if not user_context.email_confirmed %}
+                                <a href="{% url 'dashboard:activate-user' user_context.id %}"><button class="btn btn-warning">Mark email as Confirmed</button></a>
+                                {% endif %}
+                        </fieldset>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'accounts/_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Register{% endblock %}
+
+{% block page %}
+<div class="page-single">
+  <div class="container">
+    <div class="row">
+      <div class="col col-md-8 mx-auto">
+        <div class="text-center mb-6">
+            <a href="{% url 'dashboard:home' %}" ><img src="{% static 'assets/images/logo.png' %}" class="h-9" alt="Logo"></a>
+        </div>
+        <div class="card">
+          <div class="card-body p-6">
+            <div class="card-title text-center font-weight-bold">
+              Create new account
+            </div>
+            {% crispy form %}
+          </div>
+        </div>
+        <div class="text-center text-muted">
+          Already have account?
+          <a href="{% url 'accounts:login' %}">Sign in</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,213 @@
+{% load index %}
+<div class="card card-table">
+    {% if tableData.actions|length > 0 %}
+    <div class="card-header">
+        <div class="card-options">
+        {% for action in tableData.actions %}
+            <a href="{{ action.url }}" class="btn btn-sm {{ action.css_class }}">{% if action.icon %}<i class="{{ action.icon }}"></i> {% endif %}{{ action.label }}</a>
+        {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    <div class="table-responsive">
+        <table class="table table-hover table-outline {% if not tableData.meta.table_wrap %}text-nowrap{% endif %} card-table">
+            <thead>
+                <tr>
+                    {% for field in tableData.fields %}
+                    <th class="{{ field.class }}">{% if field.label != "..." %}{{ field.label }}{% endif %}</th>
+                    {% endfor %}
+                    <th class="w-1"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if tableData.rows|length == 0 %}
+                <tr>
+                    <td colspan="{{ tableData.fields|length|add:"1" }}" class="text-center text-secondary">No Entries Found</td>
+                </tr>
+                {% endif %}
+                {% for row in tableData.rows %}
+                    {% if row.header %}
+                    <tr class="bg-dark text-white" {% for attr, value in row.attrs.items %}{{ attr }}="{{ value }}" {% endfor %}>
+                        <td colspan="{{ tableData.fields|length|add:1 }}">{{ row.header }}</td>
+                    </tr>
+                    {% endif %}
+                    {% for group in row.groups %}
+                        {% with field_index=forloop.counter0 %}
+                            <tr data-id="{{ row.id }}" id="row-{{ row.id }}-{{ forloop.counter0 }}" {% for attr, value in row.attrs.items %}{{ attr }}="{{ value }}" {% endfor %}>
+                                {% for data in group %}
+                                <td class="{% get_key_from_list tableData.fields field_index 'class' %} {{ data.meta.wrapper_class }}">
+                                    {% if data.type == "progress-meter" %}
+                                        <div class="clearfix">
+                                            <div class="float-left">
+                                                <strong>{{ data.meta.percent }}%</strong>
+                                            </div>
+                                            {% if data.subtext %}
+                                            <div class="float-right">
+                                                <small class="text-muted">
+                                                    {{ data.subtext }}
+                                                </small>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="progress progress-xs">
+                                            <div class="progress-bar {% if data.meta.percent < 40 %}bg-red{% elif data.meta.percent < 70 %}bg-yellow{% else %}bg-green{% endif %}" role="progressbar" style="width:{{ data.meta.percent }}%" aria-valuenow="{{ data.meta.percent }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    {% elif data.type == "text" %}
+                                        <div class="{{ data.meta.css_class }}">{{ data.text }}</div>
+                                        {% if data.subtext %}
+                                            <div class="small text-muted">{{ data.subtext }}</div>
+                                        {% endif %}
+                                    {% elif data.type == "input" %}
+                                        <div class="{{ data.meta.css_class }}">
+                                            <label>
+                                                <input {% if data.meta.id %} id="{{ data.meta.id }}" {% else %}id="input{{forloop.counter0 }}-{{row.id}}" {% endif %} {% if data.meta.style %} style="{{data.meta.style}}" {% endif %} class="form-control" type="data.meta.type" {% if data.subtext %} placeholder="{{ data.subtext }}" {% endif %} {% if data.meta.value %}value="{{data.meta.value}}"{% endif %}>{% if data.text %}{{ data.text }}{% endif %}
+                                            </label>
+                                        </div>
+                                    {% elif data.type == "dropdown" %}
+                                        <div class="{{ data.meta.css_class}}">
+                                            <select class="form-control" {% if data.meta.style %} style="{{ data.meta.style }}" {% endif %} {% if data.meta.id %}id="{{data.meta.id}}"{% else %}id="dropdown{{ forloop.counter0 }}-{{row.id}}"{% endif %} name="{{data.text}}">
+                                                <option {% if not data.meta.selected %}selected{% endif %} value="">{{ data.subtext }}</option>
+                                                {% for opsn in data.meta.options %}
+                                                    <option {% if opsn.style %}style="{{opsn.style}}"{% endif %}{% if opsn.selected %}selected{% endif %} {% if opsn.value %}value="{{ opsn.value }}" {% else %} value="opsn" {% endif %} {% for attr, value in opsn.attrs.items %}{{ attr }}="{{ value }}"{% endfor %}>{% if opsn.label %} {{ opsn.label }} {% else %} {{ opsn }}{% endif %}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    {% elif data.type == "comma-seperated-list" %}
+                                        <div>
+                                        {% for item in data.text %}
+                                            {{ item }}{% if not forloop.last %} ,{% endif %}
+                                        {% endfor %}
+                                        </div>
+                                    {% elif data.type == "link" %}
+                                        <div><a href="{{ data.text }}">{{ data.text|truncatechars:20 }}</a></div>
+                                        {% if data.subtext %}
+                                            <div class="small text-muted">{{ data.subtext }}</div>
+                                        {% endif %}
+                                    {% elif data.type == "linked-text" %}
+                                        <div><a href="{{ data.meta.url }}">{{ data.text }}</a></div>
+                                        {% if data.subtext %}
+                                            <div class="small text-muted">{{ data.subtext }}</div>
+                                        {% endif %}
+                                    {% elif data.type == "currency" %}
+                                        <div><i class="fa fa-rupee" style="font-size: 0.85em;"></i> {{ data.text }}</div>
+                                    {% if data.subtext %}
+                                        <div class="small text-muted">{{ data.subtext }}</div>
+                                    {% endif %}
+                                    {% elif data.type == "text-inverted" %}
+                                        {% if data.subtext %}
+                                            <div class="small text-muted">{{ data.subtext }}</div>
+                                        {% endif %}
+                                        <div>{{ data.text }}</div>
+                                    {% elif data.type == "text-secondary" %}
+                                        <span class="text-muted">{{ data.text }}</span>
+                                    {% elif data.type == "avatar" %}
+                                        <div class="avatar d-block" style="background-image: url('{{ data.meta.url }}')">
+                                            <span class="avatar-status {% if data.meta.is_online %}bg-green{% else %}bg-red{% endif %}"></span>
+                                        </div>
+                                    {% elif data.type == "icon" %}
+                                        <i class="{{ data.meta.iconclass }}"></i>
+                                    {% elif data.type == "boolean-indicator" %}
+                                        {% if data.text == True %}
+                                        <i class="fa fa-circle text-success"></i>
+                                        {% else %}
+                                        <i class="fa fa-circle text-danger"></i>
+                                        {% endif %}
+                                    {% elif data.type == "button" %}
+                                        <button class="btn btn-sm {{ data.meta.btn_class }}">{{ data.text }}</button>
+                                    {% elif data.type == "date-picker" %}
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <select class="browser-default custom-select" id="month_select{{row.id}}" name="month_select">
+                                                    <option {% if not data.meta.selected.month %}selected{% endif %} disabled="">Please select Month</option>
+                                                    <option {% if data.meta.selected.month and data.meta.selected.month == 1 %}selected{% endif %} value="1">January</option>
+                                                    <option {% if data.meta.selected.month and data.meta.selected.month == 2 %}selected{% endif %} value="2">February</option>
+                                                    <option {% if data.meta.selected.month and data.meta.selected.month == 3 %}selected{% endif %} value="3">March</option>
+                                                    <option {% if data.meta.selected.month and data.meta.selected.month == 4 %}selected{% endif %} value="4">April</option>
+                                                    <option {% if data.meta.selected.month and data.meta.selected.month == 5 %}selected{% endif %} value="5">May</option>
+                                                    <option {% if data.meta.selected.month and data.meta.selected.month == 6 %}selected{% endif %} value="6">June</option>
+                                                    <option {% if data.meta.selected.month and data.meta.selected.month == 7 %}selected{% endif %} value="7">July</option>
+                                                    <option {% if data.meta.selected.month and data.meta.selected.month == 8 %}selected{% endif %} value="8">August</option>
+                                                    <option {% if data.meta.selected.month and data.meta.selected.month == 9 %}selected{% endif %} value="9">September</option>
+                                                    <option {% if data.meta.selected.month and data.meta.selected.month == 10 %}selected{% endif %} value="10">October</option>
+                                                    <option {% if data.meta.selected.month and data.meta.selected.month == 11 %}selected{% endif %} value="11">November</option>
+                                                    <option {% if data.meta.selected.month and data.meta.selected.month == 12 %}selected{% endif %} value="12">December</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-12">
+                                                <select class="browser-default custom-select" id="year_select{{row.id}}" name="year_select">
+                                                    <option {% if not data.meta.selected.year %}selected{% endif %} disabled>Please select Year</option>
+                                                    {% for y in data.meta.from_year|range_year:data.meta.to_year %}
+                                                        <option {% if data.meta.selected.year and data.meta.selected.year == y %}selected{% endif %} value="{{ y }}">{{ y }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- <input type="submit" name="Submit{{row.id}}" value="Save" class="btn btn-default" onclick="validateForm(this)"> -->
+                                    {% endif %}
+                                </td>
+                                {% endfor %}
+                                {% if forloop.counter0 == 0 %}
+                                <td class="action-buttons text-right align-middle" rowspan="{{ row.groups|length }}">
+                                    {% for action in row.actions %}
+                                    <a href="{{ action.url }}{%if action.add_next %}?next={{ request.path }}{% endif %}" class="btn btn-sm {{ action.btn_class }}" id={{row.id}}{% if action.open_in_new %}target="_blank"{% endif %} {% if action.data_toggle %} data-toggle={{ action.data_toggle }} {% endif %}>{{ action.label }}</a>
+                                    {% endfor %}
+                                </td>
+                                {% endif %}
+                            </tr>
+                        {% endwith %}
+                    {% endfor %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if tableData.meta.pagination %}
+    <div class="card-footer">
+        {% with pagination=tableData.meta.pagination %}
+        {% with num_pages=pagination.total|num_of_pages:pagination.page_size %}
+            <div class="row">
+               <div class="col-lg-12 col-md-12">
+                    <nav>
+                        <ul class="pagination pg-red justify-content-center">
+                        {% if num_pages > 1 %}
+                            <li class="page-item {% if not pagination.prev_url %}disabled{% endif %}">
+                                <a href="{{ pagination.prev_url }}" class="page-link"><i class="fe fe-chevrons-left"></i></a>
+                            </li>
+                          {% for n in num_pages|page_range %}
+                            {% if pagination.page|add:'-3' == n %}
+                              {# First page #}
+                              <li class="page-item"><a class="page-link" href="?{% query_transform request page=1 pagesize=pagination.page_size %}">1</a></li>
+                              {% if n != 1 %}
+                                <li class="page-item disabled"><a class="page-link">&#8943;</a></li>
+                              {% endif %}
+                            {% elif pagination.page == n %}
+                              {# Current page #}
+                              <li class=" page-item active"><a class="page-link" href="#">{{ n }}</a></li>
+                            {% elif pagination.page|add:'-3' < n and n < pagination.page|add:'3' %}
+                              {# Pages around current page #}
+                              <li class="page-item"><a class="page-link" href="?{% query_transform request page=n pagesize=pagination.page_size %}">{{ n }}</a></li>
+                            {% elif pagination.page|add:'3' == n %}
+                              {# Last page #}
+                              {% if n != num_pages %}
+                                <li class="page-item disabled"><a class="page-link">&#8943;</a></li>
+                              {% endif %}
+                              <li class="page-item"><a class="page-link" href="?{% query_transform request page=num_pages pagesize=pagination.page_size %}">{{ num_pages }}</a></li>
+                            {% endif %}
+                          {% endfor %} 
+                            <li class="page-item {% if not pagination.next_url %}disabled{% endif %}">
+                              <a href="{{ pagination.next_url }}" class="page-link"><i class="fe fe-chevrons-right"></i></a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    </nav>
+                </div>
+            </div>
+            <div class="row">
+            <div class="col-12 col-lg-12  col-lg-12 text-center">
+                Showing {{ pagination.start }} - {{ pagination.end }} of {{ pagination.total }} results
+            </div>
+            </div>
+            {% endwith %}
+            {% endwith %}
+    </div>
+        {% endif %}
+</div>

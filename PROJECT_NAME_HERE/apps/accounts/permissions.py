@@ -1,0 +1,1 @@
+from rolepermissions.permissions import register_object_checker

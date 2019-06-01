@@ -1,0 +1,17 @@
+{% extends '_base.html' %}
+{% block title %}{% endblock %}
+
+{% block page %}
+      <div class="page-main w-100 toggled">
+        {% include 'dashboard/components/_sidebar.html' %}
+        <div id="content">
+            {% include "dashboard/components/_header.html" %}
+            <div class="px-2" style="margin-bottom: 80px;">
+            {% block content %}
+            {% endblock %}
+            </div>
+            {% include "dashboard/components/_footer.html" %}
+        </div>        
+      </div>
+      {% include "_live_chat.html" %}
+{% endblock %}

@@ -1,0 +1,150 @@
+{% extends "dashboard/_base.html" %}
+{% load core_filters %}
+
+{% block title %}Home | Dashboard{% endblock %}
+{% block content %}
+<div class="my-3 my-md-5">
+  <div class="container">
+    <div class="page-header">
+      <h1 class="page-title">
+        Quick Access
+      </h1>
+    </div>
+    <div class="row row-cards button-cards">
+      <div class="col-6 col-sm-3">
+        <div class="card">
+          <a href="{% url 'dashboard:list-users' %}" class="btn btn-dark" style="font-size: 1.2em;">
+            <div class="card-body p-3 text-center">
+              <span class="fe fe-user"></span> Users
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col-6 col-sm-3">
+        <div class="card">
+          <a href="#" class="btn btn-dark" style="font-size: 1.2em;">
+            <div class="card-body p-3 text-center">
+              <span class="fe fe-server"></span> Settings
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col-6 col-sm-3">
+        <div class="card">
+          <a href="{% url 'accounts:logout' %}" class="btn btn-dark" style="font-size: 1.2em;">
+            <div class="card-body p-3 text-center">
+              <span class="fe fe-log-out"></span> Logout
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="page-header">
+      <h1 class="page-title">
+        Dashboard
+      </h1>
+    </div>
+    <div class="row row-cards align-items-center">
+      <div class="container">
+        <div class="h3 m-2">User Stats</div>
+        <div class="row m-2">
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body p-3 text-center mx-2">
+                <div class="text-right text-green">{{ data.count.online_users|default:0 }} Online</div>
+                <div class="h1 m-0">{{ data.count.users|default:"Error" }}</div>
+                <div class="text-muted mb-4">Registered Users</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body p-3 text-center mx-2">
+                <div class="h1 m-0">{{ data.count.inactive_users }}</div>
+                <div class="text-muted mb-4">Inactive Users</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body p-3 text-center mx-2">
+                <div class="h1 m-0">{{ data.count.unconfirmed_emails|default:"Error" }}</div>
+                <div class="text-muted mb-4">Unconfirmed Emails</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row m-2">
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body p-3 text-center mx-2">
+                <div class="h1 m-0">{{ data.count.users_joined_this_month|default:"0" }}</div>
+                <div class="text-muted mb-4">Users joined this month</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body p-3 text-center mx-2">
+                <div class="h1 m-0">{{ data.count.users_joined_this_week|default:"0" }}</div>
+                <div class="text-muted mb-4">Users joined this week</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body p-3 text-center mx-2">
+                <div class="h1 m-0">{{ data.count.users_joined_today|default:"0" }}</div>
+                <div class="text-muted mb-4">Users joined today</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row m-2">
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body p-3 text-center mx-2">
+                <div class="h1 m-0">{{ data.count.users_joined_previous_month|default:"0" }}</div>
+                <div class="text-muted mb-4">Users joined last month</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body p-3 text-center mx-2">
+                <div class="h1 m-0">{{ data.count.users_joined_previous_week|default:"0" }}</div>
+                <div class="text-muted mb-4">Users joined last week</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body p-3 text-center mx-2">
+                <div class="h1 m-0">{{ data.count.users_joined_yesterday|default:"0" }}</div>
+                <div class="text-muted mb-4">Users joined yesterday</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="page-header">
+      <h1 class="page-title">Background Processes</h1>
+    </div>
+    <div class="row row-cards align-items-center">
+      <div class="col-6 col-sm-3">
+        <div class="card bg-dark">
+          <div class="card-body">
+            <div class="h3 text-center text-white">Email Queue</div>
+            <div class="h1 m-0 text-center text-white">{{ data.count.tasks.emails.pending|default:0 }}</div>
+            <div class="text-muted mb-3 text-center">Pending</div>
+            <div class="text-white text-center">({{ data.count.tasks.emails.ongoing|default:0 }} Ongoing)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

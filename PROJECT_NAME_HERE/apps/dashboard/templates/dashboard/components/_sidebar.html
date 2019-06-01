@@ -1,0 +1,100 @@
+{% load static %}
+<nav id="sidebar" class="sidebar-wrapper bg-dark text-light">
+    <div class="sidebar-content">
+        <div class="sidebar-brand bg-light text-dark box-shadow-light d-none">
+            <a href="{% url 'dashboard:home' %}'">
+                <img src="{% static 'assets/images/logo.png' %}" class="header-brand-img" alt="logo">
+            </a>
+        </div>
+        
+        <div class="sidebar-header">
+            <div class="user-pic">
+                <span class="avatar avatar-lg" style="background-image: url('{% if user.avatar %}{{ user.avatar.url }}{% else %}{% static 'assets/images/avatar.png' %}{% endif %}')"></span>            
+            </div>
+            <div class="user-info">
+                <span class="user-name">{{ user.first_name|default:'Visitor' }}
+                    <strong>{{ user.last_name|default:'' }}</strong>
+                </span>
+                <span class="user-role">
+                    {% if user_roles %}
+                        {% for role in user_roles %}{{ role|capfirst }}{% if not forloop.last %},{% endif %} {% endfor %}
+                    {% else %}
+                        Visitor
+                    {% endif %}
+                </span>
+                <span class="user-status">
+                    <i class="fa fa-circle {% if not user.is_online %}text-danger{% endif %}"></i>
+                    <span>{% if user.is_online %}Online{% else %}Offline{% endif %}</span>
+                </span>
+            </div>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li class="sidebar-dropdown">
+                    <a href="#">
+                        <i class="fa fa-tachometer"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <span class="dropdown-icon fa fa-sort-desc"></span>
+                    <div class="sidebar-submenu">
+                        <ul>
+                            <li>
+                                <a href="{% url 'dashboard:home' %}">Home</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                {% if user_roles %}
+                {% if "admin" in user_roles|lower %}
+                <li class="sidebar-dropdown">
+                  <a href="#">
+                    <i class="fe fe-user"></i>
+                    <span>Admin</span>
+                  </a>
+                  <span class="dropdown-icon fa fa-sort-desc"></span>
+                    <div class="sidebar-submenu">
+                      <ul>                    
+                        <div class="pt-3 px-2 font-weight-bold text-dark"><i class="fe fe-user"></i> Users Manager</div>
+                        <li>
+                          <a href="{% url 'dashboard:list-users' %}">Browse</a>
+                        </li>
+                        <li>
+                          <a href="{% url 'dashboard:create-user' %}">Create User</a>
+                        </li>
+
+                        <div class="dropdown-divider"></div>
+                        <li>
+                          <a href="{% url 'portal:contact-submissions' %}">
+                              <i class="fe fe-list"></i> Contact Us Submissions
+                          </a>
+                        </li>
+                        {% if user.is_superuser %}
+                        <div class="dropdown-divider"></div>
+                        <li>
+                          <a href="{% url 'dashboard:site-management' %}">
+                            <i class="fe fe-settings"></i> Settings
+                          </a>
+                        </li>
+                        {% endif %}
+                      </ul>
+                    </div>
+                {% endif %}
+                {% endif %}
+                            
+                </li>
+                <li class="sidebar-dropdown">
+                    <a href="#" class="toggle-sidebar px-3 text-center single">
+                        <i class="fa fa-chevron-left toggle-icon"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <!-- sidebar-menu  -->
+    </div>
+    <!-- sidebar-content  -->
+    <div class="sidebar-footer">
+        <a href="{% url 'accounts:logout' %}" title="Logout">
+            <i class="fa fa-power-off"></i>
+        </a>
+    </div>
+</nav>
