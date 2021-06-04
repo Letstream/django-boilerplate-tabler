@@ -4,7 +4,7 @@ billiard==3.6.0.0
 celery==4.3.0
 certifi==2019.3.9
 chardet==3.0.4
-Django==2.2.1
+Django==2.2.21
 django-crispy-forms==1.7.2
 django-debug-toolbar==1.11
 django-discover-runner==1.0
